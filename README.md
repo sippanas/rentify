@@ -2,6 +2,8 @@
 
 >Projekto tikslas – sukurti platformą, kuri apjungtų ir palengvintų nekilnojamo turto (butų/namų/garažų) ilgalaikės nuomos administravimą.
 
+>Taikomosios srities objektai: Objekto tipas < Objektas < Kambarys/Patalpa
+
 Platformoje nebus talpinami nuomos skelbimai, viskas orientuota į pačios nuomos administravimą. Išskiriamos trys rolės – nuomotojas, nuomininkas, administratorius. Užsiregistravęs naudotojas platformoje gaus tiek nuomotojo, tiek nuomininko roles ir galės atlikti šių rolių veiksmus vienoje paskyroje. Rolės bus išskiriamos pačiam objektui (nekilnojamam turtui), kur vienas objektas turės vieną nuomotoją bei vieną nuomininką. Pati platforma veiks pakvietimo principu, kur nuomotojas galės pakviesti nuomininką prisijungti prie konkretaus objekto, kur galės atlikti su objekto nuoma susijusius veiksmus.
 
 ## Funkciniai reikalavimai
