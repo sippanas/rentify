@@ -1,8 +1,12 @@
+using Rentify.Data.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddTransient<IObjectTypesRepository, ObjectTypesRepository>();
 
 var app = builder.Build();
 
@@ -17,6 +21,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.MapControllerRoute(
     name: "default",
