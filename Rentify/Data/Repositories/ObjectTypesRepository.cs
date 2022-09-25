@@ -31,7 +31,7 @@ namespace Rentify.Data.Repositories
             };
         }
 
-        public async Task<ObjectType> Create()
+        public async Task<ObjectType> Create(ObjectType objectType)
         {
             return new ObjectType()
             {
@@ -39,7 +39,7 @@ namespace Rentify.Data.Repositories
             };
         }
 
-        public async Task<ObjectType> Put()
+        public async Task<ObjectType> Put(ObjectType objectType)
         {
             return new ObjectType()
             {
@@ -47,7 +47,7 @@ namespace Rentify.Data.Repositories
             };
         }
 
-        public async Task Delete()
+        public async Task Delete(ObjectType objectType)
         {
 
         }
