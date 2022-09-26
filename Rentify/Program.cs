@@ -1,3 +1,4 @@
+using Rentify.Data;
 using Rentify.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<IObjectTypesRepository, ObjectTypesRepository>();
+builder.Services.AddDbContext<DatabaseContext>();
 
 var app = builder.Build();
 

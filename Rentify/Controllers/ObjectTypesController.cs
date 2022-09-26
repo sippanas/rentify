@@ -18,9 +18,15 @@ namespace Rentify.Controllers
 
         // GET: /api/object-types
         [HttpGet]
-        public async Task<IEnumerable<ObjectType>> GetAll()
+        public async Task<IEnumerable<ObjectTypeDto>> GetAll()
         {
-            return await _objectTypesRepository.GetAll();
+            var objectTypes = await _objectTypesRepository.GetAll();
+
+            IEnumerable<ObjectTypeDto> objectTypesDto = 
+                objectTypes.Select(x => new ObjectTypeDto(x.Name));
+
+            return objectTypesDto;
+
         }
 
         // GET: /api/object-types/1
@@ -35,9 +41,9 @@ namespace Rentify.Controllers
 
         // POST: /api/object-types
         [HttpPost]
-        public async Task<ActionResult<ObjectType>> Post(ObjectTypeDto objectTypeDto)
+        public async Task<ActionResult<ObjectType>> Post(CreateObjectTypeDto objectTypeDto)
         {
-            var newObjectType = new ObjectType { Name = objectTypeDto.name };
+            var newObjectType = new ObjectType { Name = objectTypeDto.Name };
 
             await _objectTypesRepository.Create(newObjectType);
 
@@ -46,12 +52,12 @@ namespace Rentify.Controllers
 
         // PUT: /api/object-types/1
         [HttpPut("{id}")]
-        public async Task<ActionResult<ObjectType>> Put(int id, ObjectTypeDto objectTypeDto)
+        public async Task<ActionResult<ObjectType>> Put(int id, UpdateObjectTypeDto objectTypeDto)
         {
             var result = await _objectTypesRepository.Get(id);
             if (result == null) return NotFound($"Object type with ID {id} was not found.");
 
-            result.Name = objectTypeDto.name;
+            result.Name = objectTypeDto.Name;
 
             await _objectTypesRepository.Put(result);
 

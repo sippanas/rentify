@@ -1,55 +1,43 @@
-﻿using Rentify.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Rentify.Data.Models;
 
 namespace Rentify.Data.Repositories
 {
     public class ObjectTypesRepository : IObjectTypesRepository
     {
+        private readonly DatabaseContext _dbContext;
+
+        public ObjectTypesRepository(DatabaseContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public async Task<IEnumerable<ObjectType>> GetAll()
         {
-            return new List<ObjectType>
-            {
-                new ObjectType()
-                {
-                    Name = "Butas"
-                },
-                new ObjectType()
-                {
-                    Name = "Namas"
-                },
-                new ObjectType()
-                {
-                    Name = "Garažas"
-                }
-            };
+            return await _dbContext.ObjectTypes.ToListAsync();
         }
 
         public async Task<ObjectType> Get(int id)
         {
-            return new ObjectType()
-            {
-                Name = "Butas"
-            };
+            return await _dbContext.ObjectTypes.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<ObjectType> Create(ObjectType objectType)
+        public async Task Create(ObjectType objectType)
         {
-            return new ObjectType()
-            {
-                Name = "Butas"
-            };
+            _dbContext.ObjectTypes.Add(objectType);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<ObjectType> Put(ObjectType objectType)
+        public async Task Put(ObjectType objectType)
         {
-            return new ObjectType()
-            {
-                Name = "Butas"
-            };
+            _dbContext.ObjectTypes.Update(objectType);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task Delete(ObjectType objectType)
         {
-
+            _dbContext.ObjectTypes.Remove(objectType);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
