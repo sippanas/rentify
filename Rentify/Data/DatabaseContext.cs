@@ -6,6 +6,7 @@ namespace Rentify.Data
     public class DatabaseContext : DbContext
     {
         public DbSet<ObjectType> ObjectTypes { get; set; }
+        public DbSet<Models.Object> Objects { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

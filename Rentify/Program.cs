@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<IObjectTypesRepository, ObjectTypesRepository>();
+builder.Services.AddTransient<IObjectsRepository, ObjectsRepository>();
 builder.Services.AddDbContext<DatabaseContext>();
 
 var app = builder.Build();
