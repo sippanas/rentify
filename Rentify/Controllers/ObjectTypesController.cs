@@ -23,7 +23,7 @@ namespace Rentify.Controllers
             var objectTypes = await _objectTypesRepository.GetAll();
 
             IEnumerable<ObjectTypeDto> objectTypesDto = 
-                objectTypes.Select(x => new ObjectTypeDto(x.Name));
+                objectTypes.Select(x => new ObjectTypeDto(x.Id, x.Name));
 
             return objectTypesDto;
 
@@ -34,7 +34,7 @@ namespace Rentify.Controllers
         public async Task<ActionResult<ObjectType>> Get(int id)
         {
             var result = await _objectTypesRepository.Get(id);
-            if (result == null) return NotFound($"Object type with ID {id} was not found.");
+            if (result == null) return NotFound();
 
             return Ok(result);
         }
@@ -55,7 +55,7 @@ namespace Rentify.Controllers
         public async Task<ActionResult<ObjectType>> Put(int id, UpdateObjectTypeDto objectTypeDto)
         {
             var result = await _objectTypesRepository.Get(id);
-            if (result == null) return NotFound($"Object type with ID {id} was not found.");
+            if (result == null) return NotFound();
 
             result.Name = objectTypeDto.Name;
 
@@ -69,7 +69,7 @@ namespace Rentify.Controllers
         public async Task<ActionResult<ObjectType>> Delete(int id)
         {
             var result = await _objectTypesRepository.Get(id);
-            if (result == null) return NotFound($"Object type with ID {id} was not found.");
+            if (result == null) return NotFound();
 
             await _objectTypesRepository.Delete(result);
 
