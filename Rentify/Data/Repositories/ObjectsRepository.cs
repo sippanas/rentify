@@ -12,14 +12,15 @@ namespace Rentify.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Models.Object>> GetAll(ObjectType objectType)
+        public async Task<IEnumerable<Models.Object>> GetAll(int objectTypeId)
         {
-            return await _dbContext.Objects.Where(x => x.ObjectType == objectType).ToListAsync();
+            return await _dbContext.Objects.Where(x => x.ObjectTypeId == objectTypeId).ToListAsync();
         }
 
-        public async Task<Models.Object> Get(ObjectType objectType, int objectId)
+        public async Task<Models.Object> Get(int objectTypeId, int objectId)
         {
-            return await _dbContext.Objects.FirstOrDefaultAsync(x => x.ObjectType == objectType && x.Id == objectId);
+            return await _dbContext.Objects
+                .FirstOrDefaultAsync(x => x.ObjectTypeId == objectTypeId && x.Id == objectId);
         }
 
         public async Task Create(Models.Object newObject)

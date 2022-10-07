@@ -20,21 +20,25 @@ namespace Rentify.Controllers
 
         // GET: /api/object-types/1/objects
         [HttpGet]
-        public async Task<IEnumerable<ObjectDto>> GetAll(ObjectType objectType)
+        public async Task<ActionResult<IEnumerable<ObjectDto>>> GetAll(int objectTypeId)
         {
-            var objectsOfType = await _objectsRepository.GetAll(objectType);
+            var objectType = await _objectsTypesRepository.Get(objectTypeId);
+            if (objectType == null) return NotFound();
 
-            var objectsDto = objectsOfType.Select(x => new ObjectDto(x.Address, x.Price, x.RelevantInformation));
+            var objectsOfType = await _objectsRepository.GetAll(objectTypeId);
 
-            return objectsDto;
+            var objectsDto = objectsOfType.Select(x => 
+                    new ObjectDto(x.Id, x.Address, x.Price, x.RelevantInformation, x.ObjectTypeId));
+
+            return Ok(objectsDto);
         }
 
         // GET: /api/object-types/1/objects/2
         [HttpGet("{id}")]
-        public async Task<ActionResult<ObjectDto>> Get(ObjectType objectType, int objectId)
+        public async Task<ActionResult<ObjectDto>> Get(int objectTypeId, int objectId)
         {
-            var selectedObject = await _objectsRepository.Get(objectType, objectId);
-            if (selectedObject == null) return NotFound($"Object with ID {objectId} was not found.");
+            var selectedObject = await _objectsRepository.Get(objectTypeId, objectId);
+            if (selectedObject == null) return NotFound();
 
             return Ok(selectedObject);
         }
