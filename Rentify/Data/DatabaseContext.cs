@@ -8,6 +8,8 @@ namespace Rentify.Data
         public DbSet<ObjectType> ObjectTypes { get; set; }
         public DbSet<Models.Object> Objects { get; set; }
 
+        public DbSet<Room> Rooms { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             var connectionString = "server=localhost;user=root;password=;database=rentify";
