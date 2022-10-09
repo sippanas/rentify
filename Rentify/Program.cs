@@ -9,6 +9,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<IObjectTypesRepository, ObjectTypesRepository>();
 builder.Services.AddTransient<IObjectsRepository, ObjectsRepository>();
+builder.Services.AddTransient<IRoomsRepository, RoomsRepository>();
 builder.Services.AddDbContext<DatabaseContext>();
 
 var app = builder.Build();
@@ -33,6 +34,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
-app.MapFallbackToFile("index.html"); ;
+app.MapFallbackToFile("index.html");
 
 app.Run();
