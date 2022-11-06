@@ -1,4 +1,7 @@
-﻿namespace Rentify.Data.Models
+﻿using Rentify.Auth.Models;
+using System.ComponentModel.DataAnnotations;
+
+namespace Rentify.Data.Models
 {
     public class Object
     {
@@ -9,5 +12,12 @@
         public int ObjectTypeId { get; set; }
         public ObjectType? ObjectType { get; set; }
         // Needs counter
+
+        [Required]
+        public string OwnerId { get; set; }
+        public CustomUser Owner { get; set; }
+
+        public string? OccupierId { get; set; }
+        public CustomUser? Occupier { get; set; }
     }
 }

@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Rentify.Auth.Models;
 using Rentify.Data.Models;
 
 namespace Rentify.Data
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<CustomUser>
     {
         public DbSet<ObjectType> ObjectTypes { get; set; }
         public DbSet<Models.Object> Objects { get; set; }

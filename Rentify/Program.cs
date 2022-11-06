@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Rentify.Auth;
 using Rentify.Auth.Models;
 using Rentify.Data;
 using Rentify.Data.Repositories;
@@ -8,13 +9,12 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<IObjectTypesRepository, ObjectTypesRepository>();
 builder.Services.AddTransient<IObjectsRepository, ObjectsRepository>();
 builder.Services.AddTransient<IRoomsRepository, RoomsRepository>();
+builder.Services.AddTransient<IJwtTokenService, JwtTokenService>();
 builder.Services.AddDbContext<DatabaseContext>();
 builder.Services.AddIdentity<CustomUser, IdentityRole>()
     .AddEntityFrameworkStores<DatabaseContext>()
