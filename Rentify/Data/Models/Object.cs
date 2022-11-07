@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Rentify.Data.Models
 {
-    public class Object
+    public class Object : IUserOwnedResource
     {
         public int Id { get; set; }
         public string? Address { get; set; }

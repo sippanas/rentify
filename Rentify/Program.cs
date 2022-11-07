@@ -1,31 +1,29 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Rentify.Auth;
 using Rentify.Auth.Models;
 using Rentify.Data;
 using Rentify.Data.Repositories;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddTransient<IObjectTypesRepository, ObjectTypesRepository>();
-builder.Services.AddTransient<IObjectsRepository, ObjectsRepository>();
-builder.Services.AddTransient<IRoomsRepository, RoomsRepository>();
-builder.Services.AddTransient<IJwtTokenService, JwtTokenService>();
-builder.Services.AddDbContext<DatabaseContext>();
 builder.Services.AddIdentity<CustomUser, IdentityRole>()
     .AddEntityFrameworkStores<DatabaseContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters.ValidAudience = builder.Configuration["JWT:ValidAudience"];
@@ -33,6 +31,20 @@ builder.Services.AddAuthentication(options =>
         options.TokenValidationParameters.IssuerSigningKey =
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]));
     });
+
+builder.Services.AddDbContext<DatabaseContext>();
+builder.Services.AddTransient<IObjectTypesRepository, ObjectTypesRepository>();
+builder.Services.AddTransient<IObjectsRepository, ObjectsRepository>();
+builder.Services.AddTransient<IRoomsRepository, RoomsRepository>();
+builder.Services.AddTransient<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<DbSeeder>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(PolicyNames.ResourceOwner, policy => policy.Requirements.Add(new ResourceOwnerRequirement()));
+});
+
+builder.Services.AddSingleton<IAuthorizationHandler, ResourceOwnerAuthorizationHandler>();
 
 var app = builder.Build();
 
@@ -47,6 +59,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
@@ -57,7 +72,8 @@ app.MapControllerRoute(
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
-app.UseAuthentication();
-app.UseAuthorization();
+
+var seeder = app.Services.CreateScope().ServiceProvider.GetRequiredService<DbSeeder>();
+await seeder.SeedAsync();
 
 app.Run();

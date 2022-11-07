@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Rentify.Auth.Models;
 using Rentify.Data.Dtos;
 using Rentify.Data.Models;
 using Rentify.Data.Repositories;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Rentify.Controllers
 {
@@ -12,10 +16,14 @@ namespace Rentify.Controllers
         private readonly IObjectsRepository _objectsRepository;
         private readonly IObjectTypesRepository _objectsTypesRepository;
 
-        public ObjectsController(IObjectsRepository objectsRepository, IObjectTypesRepository objectsTypesRepository)
+        private readonly IAuthorizationService _authorizationService;
+
+        public ObjectsController(IObjectsRepository objectsRepository, IObjectTypesRepository objectsTypesRepository,
+            IAuthorizationService authorizationService)
         {
             _objectsRepository = objectsRepository;
             _objectsTypesRepository = objectsTypesRepository;
+            _authorizationService = authorizationService;
         }
 
         // GET: /api/object-types/1/objects
@@ -48,6 +56,7 @@ namespace Rentify.Controllers
 
         // POST: /api/object-types/{objectTypeId}/objects
         [HttpPost]
+        [Authorize(Roles = Roles.User)]
         public async Task<ActionResult<Data.Models.Object>> Post(int objectTypeId, CreateObjectDto createObjectDto)
         {
             var objectType = await _objectsTypesRepository.Get(objectTypeId);
@@ -58,7 +67,8 @@ namespace Rentify.Controllers
                 Address = createObjectDto.Address,
                 Price = createObjectDto.Price,
                 RelevantInformation = createObjectDto.RelevantInformation,
-                ObjectTypeId = objectTypeId
+                ObjectTypeId = objectTypeId,
+                OwnerId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             };
 
             await _objectsRepository.Create(newObject);
@@ -68,6 +78,7 @@ namespace Rentify.Controllers
 
         // PUT: /api/object-types/1/objects/2
         [HttpPut("{objectId}")]
+        [Authorize(Roles = Roles.User)]
         public async Task<ActionResult<Data.Models.Object>> Put(int objectTypeId, int objectId, UpdateObjectDto updateObjectDto)
         {
             var objectType = await _objectsTypesRepository.Get(objectTypeId);
@@ -75,6 +86,9 @@ namespace Rentify.Controllers
 
             var updatableObject = await _objectsRepository.Get(objectTypeId, objectId);
             if (updatableObject == null) return NotFound();
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, updatableObject, PolicyNames.ResourceOwner);
+            if(!authorizationResult.Succeeded) return Forbid();
 
             updatableObject.Address = updateObjectDto.Address;
             updatableObject.Price = updateObjectDto.Price;
