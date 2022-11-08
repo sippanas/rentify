@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Rentify.Auth.Models;
 using Rentify.Data.Dtos;
 using Rentify.Data.Models;
 using Rentify.Data.Repositories;
@@ -7,18 +9,21 @@ namespace Rentify.Controllers
 {
     [ApiController]
     [Route("api/object-types/{objectTypeId}/objects/{objectId}/rooms")]
+    [Authorize(Roles = Roles.User)]
     public class RoomsController : ControllerBase
     {
         private readonly IObjectTypesRepository _objectTypesRepository;
         private readonly IObjectsRepository _objectsRepository;
         private readonly IRoomsRepository _roomsRepository;
+        private readonly IAuthorizationService _authorizationService;
 
         public RoomsController(IObjectTypesRepository objectTypesRepository,
-            IObjectsRepository objectsRepository, IRoomsRepository roomsRepository)
+            IObjectsRepository objectsRepository, IRoomsRepository roomsRepository, IAuthorizationService authorizationService)
         {
             _objectTypesRepository = objectTypesRepository;
             _objectsRepository = objectsRepository;
             _roomsRepository = roomsRepository;
+            _authorizationService = authorizationService;
         }
 
         // GET: /api/object-types/1/objects/2/rooms
@@ -66,6 +71,9 @@ namespace Rentify.Controllers
             var _object = await _objectsRepository.Get(objectTypeId, objectId);
             if (_object == null) return NotFound();
 
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, _object, PolicyNames.ResourceOwner);
+            if (!authorizationResult.Succeeded) return Forbid();
+
             var newRoom = new Room
             {
                 Name = createRoomDto.Name,
@@ -88,6 +96,9 @@ namespace Rentify.Controllers
             var _object = await _objectsRepository.Get(objectTypeId, objectId);
             if (_object == null) return NotFound();
 
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, _object, PolicyNames.ResourceOwner);
+            if (!authorizationResult.Succeeded) return Forbid();
+
             var room = await _roomsRepository.Get(objectId, roomId);
             if (room == null) return NotFound();    
 
@@ -108,6 +119,9 @@ namespace Rentify.Controllers
 
             var _object = await _objectsRepository.Get(objectTypeId, objectId);
             if (_object == null) return NotFound();
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, _object, PolicyNames.ResourceOwner);
+            if (!authorizationResult.Succeeded) return Forbid();
 
             var room = await _roomsRepository.Get(objectId, roomId);
             if (room == null) return NotFound();

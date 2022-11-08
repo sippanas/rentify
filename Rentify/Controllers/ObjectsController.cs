@@ -11,11 +11,11 @@ namespace Rentify.Controllers
 {
     [ApiController]
     [Route("api/object-types/{objectTypeId}/objects")]
+    [Authorize(Roles = Roles.User)]
     public class ObjectsController : ControllerBase
     {
         private readonly IObjectsRepository _objectsRepository;
         private readonly IObjectTypesRepository _objectsTypesRepository;
-
         private readonly IAuthorizationService _authorizationService;
 
         public ObjectsController(IObjectsRepository objectsRepository, IObjectTypesRepository objectsTypesRepository,
@@ -56,7 +56,6 @@ namespace Rentify.Controllers
 
         // POST: /api/object-types/{objectTypeId}/objects
         [HttpPost]
-        [Authorize(Roles = Roles.User)]
         public async Task<ActionResult<Data.Models.Object>> Post(int objectTypeId, CreateObjectDto createObjectDto)
         {
             var objectType = await _objectsTypesRepository.Get(objectTypeId);
@@ -78,7 +77,6 @@ namespace Rentify.Controllers
 
         // PUT: /api/object-types/1/objects/2
         [HttpPut("{objectId}")]
-        [Authorize(Roles = Roles.User)]
         public async Task<ActionResult<Data.Models.Object>> Put(int objectTypeId, int objectId, UpdateObjectDto updateObjectDto)
         {
             var objectType = await _objectsTypesRepository.Get(objectTypeId);
@@ -108,6 +106,9 @@ namespace Rentify.Controllers
 
             var removableObject = await _objectsRepository.Get(objectTypeId, objectId);
             if (removableObject == null) return NotFound();
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, removableObject, PolicyNames.ResourceOwner);
+            if (!authorizationResult.Succeeded) return Forbid();
 
             await _objectsRepository.Delete(removableObject);
 

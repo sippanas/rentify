@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Rentify.Auth.Models;
 using Rentify.Data.Dtos;
 using Rentify.Data.Models;
 using Rentify.Data.Repositories;
@@ -18,6 +20,7 @@ namespace Rentify.Controllers
 
         // GET: /api/object-types
         [HttpGet]
+        [Authorize(Roles = Roles.User)]
         public async Task<IEnumerable<ObjectTypeDto>> GetAll()
         {
             var objectTypes = await _objectTypesRepository.GetAll();
@@ -31,6 +34,7 @@ namespace Rentify.Controllers
 
         // GET: /api/object-types/1
         [HttpGet("{id}")]
+        [Authorize(Roles = Roles.User)]
         public async Task<ActionResult<ObjectType>> Get(int id)
         {
             var result = await _objectTypesRepository.Get(id);
@@ -41,6 +45,7 @@ namespace Rentify.Controllers
 
         // POST: /api/object-types
         [HttpPost]
+        [Authorize(Roles = Roles.Administrator)]
         public async Task<ActionResult<ObjectType>> Post(CreateObjectTypeDto objectTypeDto)
         {
             var newObjectType = new ObjectType { Name = objectTypeDto.Name };
@@ -52,6 +57,7 @@ namespace Rentify.Controllers
 
         // PUT: /api/object-types/1
         [HttpPut("{id}")]
+        [Authorize(Roles = Roles.Administrator)]
         public async Task<ActionResult<ObjectType>> Put(int id, UpdateObjectTypeDto objectTypeDto)
         {
             var result = await _objectTypesRepository.Get(id);
@@ -66,6 +72,7 @@ namespace Rentify.Controllers
 
         // DELETE: /api/object-types/1
         [HttpDelete("{id}")]
+        [Authorize(Roles = Roles.Administrator)]
         public async Task<ActionResult<ObjectType>> Delete(int id)
         {
             var result = await _objectTypesRepository.Get(id);
