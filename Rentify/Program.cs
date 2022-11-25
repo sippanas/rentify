@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Rentify.Auth;
 using Rentify.Auth.Models;
@@ -72,6 +73,9 @@ app.MapControllerRoute(
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
+
+var dbContext = app.Services.CreateScope().ServiceProvider.GetRequiredService<DatabaseContext>();
+dbContext.Database.Migrate();
 
 var seeder = app.Services.CreateScope().ServiceProvider.GetRequiredService<DbSeeder>();
 await seeder.SeedAsync();
