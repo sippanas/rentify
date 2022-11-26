@@ -13,7 +13,7 @@ RUN dotnet publish -c Release -o /app -r linux-musl-x64 --self-contained true --
 # build node
 FROM node AS node-builder
 WORKDIR /Rentify
-COPY ./ClientApp /node
+COPY Rentify/ClientApp /node
 RUN npm install
 RUN npm build
 
