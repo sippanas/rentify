@@ -10,10 +10,19 @@ RUN dotnet restore -r linux-musl-x64 /p:PublishReadyToRun=true
 COPY Rentify/. .
 RUN dotnet publish -c Release -o /app -r linux-musl-x64 --self-contained true --no-restore /p:PublishTrimmed=true /p:PublishReadyToRun=true /p:PublishSingleFile=true
 
+# build node
+FROM node AS node-builder
+WORKDIR /Rentify
+COPY ./ClientApp /node
+RUN npm install
+RUN npm build
+
 # final stage/image
 FROM mcr.microsoft.com/dotnet/runtime-deps:7.0-alpine-amd64
 WORKDIR /app
+RUN mkdir /app/wwwroot
 COPY --from=build /app .
+COPY --from=node-builder /node/build ./wwwroot
 ENTRYPOINT ["./Rentify"]
 
 # See: https://github.com/dotnet/announcements/issues/20
