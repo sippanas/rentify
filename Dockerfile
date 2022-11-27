@@ -18,7 +18,7 @@ WORKDIR /node
 RUN npm install
 
 COPY Rentify/ClientApp/. /node
-RUN npm build
+RUN npm run build
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/runtime-deps:7.0-alpine-amd64
