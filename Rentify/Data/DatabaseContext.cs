@@ -20,7 +20,7 @@ namespace Rentify.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var connectionString = _configuration.GetValue<string>("MysqlConnectionString");
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
     }
