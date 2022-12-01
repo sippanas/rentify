@@ -10,7 +10,7 @@ export class Register extends Component {
 
     render() {
         return (
-            <div className='margined-div'>
+            <div className="mx-auto" style={{width: "400px"}}>
                 <h2>Register new account</h2>
                 <hr />
                 <Form>
