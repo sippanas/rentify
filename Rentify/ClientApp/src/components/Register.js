@@ -45,7 +45,7 @@ export class Register extends Component {
         const msg = this.state.message;
 
         return (
-            <div className="mx-auto" style={{ width: "400px" }}>
+            <div className="mx-auto px-5 form-div">
                 {msg.length > 0 && <Alert color="primary">{msg}</Alert>}
                 <h2>Register new account</h2>
                 <hr />

@@ -10,7 +10,7 @@ export class Login extends Component {
 
     render() {
         return (
-            <div className="mx-auto" style={{ width: "400px" }} >
+            <div className="mx-auto px-5 form-div">
                 <h2>Login</h2>
                 <hr/>
                 <Form>

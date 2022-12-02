@@ -20,3 +20,9 @@ code {
 .margined-div {
     margin: 50px 300px;
 }
+
+@media (min-width: 768px) {
+    .form-div {
+        width: 500px;
+    }
+}
