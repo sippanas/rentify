@@ -11,7 +11,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddControllersWithViews();
 
@@ -40,6 +39,7 @@ builder.Services.AddAuthentication(options =>
         options.TokenValidationParameters.ValidIssuer = builder.Configuration["JWT:ValidIssuer"];
         options.TokenValidationParameters.IssuerSigningKey =
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]));
+        options.MapInboundClaims = false;
     });
 
 builder.Services.AddDbContext<DatabaseContext>();
@@ -69,6 +69,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 app.UseAuthentication();
 app.UseAuthorization();
 
