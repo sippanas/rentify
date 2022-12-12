@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import validator from 'validator';
+import authService from '../services/auth.service';
 
 export class Register extends Component {
     static displayName = Register.name;
@@ -26,28 +27,22 @@ export class Register extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
         event.preventDefault();
         this.setState({ message: '' })
 
         if (this.state.formValid) {
-            fetch('api/register', {
-                method: "POST",
-                headers: new Headers({ 'content-type': 'application/json' }),
-                body: JSON.stringify({
-                    name: this.state.name,
-                    surname: this.state.surname,
-                    email: this.state.email,
-                    password: this.state.password
-                }),
-            }).then((result) => {
-                if (result.ok) {
-                    this.setState({ message: 'User created, please log in', messageAlertClass: 'success' });
-                }
-                else if (!result.ok) {
-                    this.setState({ message: 'Server error', messageAlertClass: 'danger' });
-                }
-            })
+            await authService
+                .register(this.state.name, this.state.surname, this.state.email, this.state.password)
+                .then((response) => {
+                    if (response.status === 201) {
+                        this.setState({ message: 'User created, please log in', messageAlertClass: 'success' });
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.setState({ message: 'A user with this email already exists!', messageAlertClass: 'danger' });
+                })
         }
     };
 
