@@ -6,9 +6,11 @@ import {
     NavbarToggler,
     NavItem,
     NavLink,
-    NavbarText
+    NavbarText,
+    UncontrolledTooltip
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import * as Icon from 'react-bootstrap-icons';
 import authService from '../services/auth.service';
 import './NavMenu.css';
 
@@ -46,8 +48,30 @@ export class NavMenu extends Component {
                 <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
                 <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
                     <ul className="navbar-nav flex-grow">
+
                         {this.isLoggedIn() ?
-                                (<NavbarText>Hello, {authService.getUserEmail()}</NavbarText>) : ''}
+                            (<>
+                            <NavItem>
+                                <NavLink tag={Link} to="/counter">
+                                    <Icon.Houses id="OwnedPropertyIcon" color="black" size="22"/>
+                                    <UncontrolledTooltip className="d-none d-sm-block" placement="bottom" target="OwnedPropertyIcon">
+                                        My owned property
+                                    </UncontrolledTooltip>
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink tag={Link} to="/fetchdata">
+                                    <Icon.HouseFill id="RentedPropertyIcon" color="black" size="22" />
+                                    <UncontrolledTooltip className="d-none d-sm-block" placement="bottom" target="RentedPropertyIcon">
+                                        My rented property
+                                    </UncontrolledTooltip>
+                                </NavLink>
+                            </NavItem>
+                            <NavbarText className="mx-3 d-none d-sm-block">|</NavbarText>
+                            <NavbarText>Hello, {authService.getUserEmail()}</NavbarText>
+                            </>) : ''
+                        }
+
                         {this.isLoggedIn() ?
                             (<NavItem>
                                 <NavLink href='/login' className="text-dark" onClick={this.logOutUser}>Logout</NavLink>
