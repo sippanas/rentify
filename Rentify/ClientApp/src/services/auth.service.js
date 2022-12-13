@@ -32,11 +32,29 @@ const getCurrentUser = () => {
     return localStorage.getItem("user");
 };
 
+const decodeUserToken = () => {
+    if (getCurrentUser()) {
+        const user = JSON.parse(getCurrentUser());
+        const decodedToken = jwt_decode(user.accessToken);
+
+        return decodedToken;
+    }
+};
+
+const getUserEmail = () => {
+    if (getCurrentUser()) {
+        const token = decodeUserToken();
+
+        return token.email;
+    }
+};
+
 const authService = {
     register,
     login,
     logout,
-    getCurrentUser
+    getCurrentUser,
+    getUserEmail
 }
 
 export default authService;
