@@ -28,6 +28,7 @@ namespace Rentify.Auth
             };
 
             authClaims.AddRange(userRoles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
+            authClaims.AddRange(userRoles.Select(userRole => new Claim("UserRoles", userRole)));
 
             var accessSecurityToken = new JwtSecurityToken
             (
