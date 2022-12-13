@@ -22,12 +22,12 @@ namespace Rentify.Auth
         {
             var authClaims = new List<Claim>
             {
-                new(ClaimTypes.Email, userEmail),
+                new(JwtRegisteredClaimNames.Email, userEmail),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new(JwtRegisteredClaimNames.Sub, userId)
             };
 
-            authClaims.AddRange(userRoles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
+            authClaims.AddRange(userRoles.Select(userRole => new Claim("UserRoles", userRole)));
 
             var accessSecurityToken = new JwtSecurityToken
             (
