@@ -78,8 +78,8 @@ export class Login extends Component {
 
                 {!this.state.formValid &&
                     <Alert color="primary">
-                        {this.state.formErrors.email}<br/>
-                        {this.state.formErrors.email.length > 0 && <br />}{this.state.formErrors.password}
+                        {this.state.formErrors.email}
+                        {this.state.formErrors.email.length > 0 && <><br/><br /></>}{this.state.formErrors.password}
                     </Alert>}
 
                 <h2>Login</h2>
