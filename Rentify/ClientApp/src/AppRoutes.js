@@ -3,6 +3,7 @@ import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
+import { NotFound } from "./components/NotFound";
 
 const AppRoutes = [
     {
@@ -24,6 +25,10 @@ const AppRoutes = [
     {
         path: '/register',
         element: <Register />
+    },
+    {
+        path: '*',
+        element: <NotFound/>
     }
 ];
 
