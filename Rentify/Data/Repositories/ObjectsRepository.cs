@@ -23,6 +23,11 @@ namespace Rentify.Data.Repositories
                 .FirstOrDefaultAsync(x => x.ObjectTypeId == objectTypeId && x.Id == objectId);
         }
 
+        public async Task<IEnumerable<Models.Object>> GetOwned(string userId)
+        {
+            return await _dbContext.Objects.Where(x => x.OwnerId == userId).ToListAsync();
+        }
+
         public async Task Create(Models.Object newObject)
         {
             _dbContext.Objects.Add(newObject);
