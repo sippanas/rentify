@@ -19,7 +19,7 @@ namespace Rentify.Data.Repositories
 
         public async Task<Models.Object> Get(int objectTypeId, int objectId)
         {
-            return await _dbContext.Objects
+            return await _dbContext.Objects.Include(x => x.ObjectType)
                 .FirstOrDefaultAsync(x => x.ObjectTypeId == objectTypeId && x.Id == objectId);
         }
 

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Rentify.Auth.Models;
 using Rentify.Data.Dtos;
-using Rentify.Data.Models;
 using Rentify.Data.Repositories;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -36,7 +35,7 @@ namespace Rentify.Controllers
             var objectsOfType = await _objectsRepository.GetAll(objectTypeId);
 
             var objectsDto = objectsOfType.Select(x => 
-                    new ObjectDto(x.Id, x.Address, x.Price, x.RelevantInformation, x.ObjectTypeId));
+                    new ObjectDto(x.Id, x.Address, x.Price, x.RelevantInformation, x.ObjectTypeId, x.ObjectType));
 
             return Ok(objectsDto);
         }
@@ -49,7 +48,7 @@ namespace Rentify.Controllers
             if (selectedObject == null) return NotFound();
 
             var selectedObjectDto = new ObjectDto(selectedObject.Id, selectedObject.Address,
-                selectedObject.Price, selectedObject.RelevantInformation, selectedObject.ObjectTypeId);
+                selectedObject.Price, selectedObject.RelevantInformation, selectedObject.ObjectTypeId, selectedObject.ObjectType);
 
             return Ok(selectedObjectDto);
         }
