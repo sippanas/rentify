@@ -26,10 +26,18 @@ const login = (email, password) => {
 
 const logout = () => {
     localStorage.removeItem("user");
+    delete axios.defaults.headers.common["Authorization"];
 };
 
 const getCurrentUser = () => {
     return localStorage.getItem("user");
+};
+
+const getUserToken = () => {
+    if (getCurrentUser()) {
+        const user = JSON.parse(getCurrentUser());
+        return user.accessToken;
+    }
 };
 
 const decodeUserToken = () => {
@@ -49,12 +57,24 @@ const getUserEmail = () => {
     }
 };
 
+const IsUserAdmin = () => {
+    if (getCurrentUser()) {
+        const token = decodeUserToken();
+
+        return token.UserRoles.indexOf("Administrator") > -1;
+    }
+
+    return false;
+};
+
 const authService = {
     register,
     login,
     logout,
     getCurrentUser,
-    getUserEmail
+    getUserToken,
+    getUserEmail,
+    IsUserAdmin
 }
 
 export default authService;

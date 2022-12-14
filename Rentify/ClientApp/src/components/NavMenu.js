@@ -47,10 +47,19 @@ export class NavMenu extends Component {
                 <NavbarBrand tag={Link} to="/">Rentify</NavbarBrand>
                 <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
                 <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-                    <ul className="navbar-nav flex-grow">
+                        <ul className="navbar-nav flex-grow">
+                        {this.isLoggedIn() && authService.IsUserAdmin() ?
+                            (<><NavItem>
+                                <NavLink tag={Link} to="/object-types">
+                                    <Icon.HouseGear id="PropertyTypesIcon" color="black" size="22" />
+                                    <UncontrolledTooltip className="d-none d-sm-block" placement="bottom" target="PropertyTypesIcon">
+                                        Manage property types
+                                    </UncontrolledTooltip>
+                                </NavLink>
+                            </NavItem></>) : ''}
 
                         {this.isLoggedIn() ?
-                            (<>
+                        (<>
                             <NavItem>
                                 <NavLink tag={Link} to="/counter">
                                     <Icon.Houses id="OwnedPropertyIcon" color="black" size="22"/>
@@ -74,11 +83,21 @@ export class NavMenu extends Component {
 
                         {this.isLoggedIn() ?
                             (<NavItem>
-                                <NavLink href='/login' className="text-dark" onClick={this.logOutUser}>Logout</NavLink>
+                                <NavLink href='/login' onClick={this.logOutUser}>
+                                    <Icon.BoxArrowRight id="LogoutIcon" color="black" size="22" />
+                                    <UncontrolledTooltip className="d-none d-sm-block" placement="bottom" target="LogoutIcon">
+                                        Log out
+                                    </UncontrolledTooltip>
+                                </NavLink>
                             </NavItem>)
                             :
                             (<NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
+                                <NavLink tag={Link}  to="/login">
+                                    <Icon.PersonCircle id="AccountIcon" color="black" size="22" />
+                                    <UncontrolledTooltip className="d-none d-sm-block" placement="bottom" target="AccountIcon">
+                                        Account
+                                    </UncontrolledTooltip>
+                                </NavLink>
                             </NavItem>)
                         }
                     </ul>

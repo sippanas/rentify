@@ -5,6 +5,9 @@ import { Login } from "./components/Login";
 import { Register } from "./components/Register";
 import { NotFound } from "./components/NotFound";
 
+import ObjectTypesList from './components/object-types/View';
+import ObjectTypesForm from './components/object-types/Form';
+
 const AppRoutes = [
     {
         index: true,
@@ -27,8 +30,24 @@ const AppRoutes = [
         element: <Register />
     },
     {
+        path: '/object-types',
+        element: <ObjectTypesList />
+    },
+    {
+        path: '/object-types/create',
+        element: <ObjectTypesForm formType="create" />
+    },
+    {
+        path: '/object-types/edit/:typeId',
+        element: <ObjectTypesForm formType="edit" />
+    },
+    {
+        path: '/notfound',
+        element: <NotFound />
+    },
+    {
         path: '*',
-        element: <NotFound/>
+        element: <NotFound />
     }
 ];
 
