@@ -57,15 +57,12 @@ namespace Rentify.Controllers
         // GET: /api/objects/owned
         [HttpGet]
         [Route("/api/objects/owned")]
-        public async Task<ActionResult<ObjectDto>> GetOwnedObjectsByUser()
+        public async Task<ActionResult<Data.Models.Object>> GetOwnedObjectsByUser()
         {
             var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             var objects = await _objectsRepository.GetOwned(userId);
 
-            IEnumerable<ObjectDto> objectsDto = 
-                objects.Select(x => new ObjectDto(x.Id, x.Address, x.Price, x.RelevantInformation, x.ObjectTypeId));
-
-            return Ok(objectsDto);
+            return Ok(objects);
         }
 
         // POST: /api/object-types/{objectTypeId}/objects

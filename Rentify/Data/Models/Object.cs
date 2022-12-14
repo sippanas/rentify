@@ -1,5 +1,6 @@
 ﻿using Rentify.Auth.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Rentify.Data.Models
 {
@@ -9,8 +10,10 @@ namespace Rentify.Data.Models
         public string? Address { get; set; }
         public int Price { get; set; }
         public string? RelevantInformation { get; set; }
+
         public int ObjectTypeId { get; set; }
-        public ObjectType? ObjectType { get; set; }
+        public ObjectType ObjectType { get; set; }
+
         // Needs counter
 
         [Required]
