@@ -14,7 +14,7 @@ export class Layout extends Component {
                     {this.props.children}
                 </Container>
 
-                <div className="fixed-bottom">
+                <div className="absolute-bottom">
                     <Footer />
                 </div>
             </div>
