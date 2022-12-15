@@ -40,10 +40,52 @@ const getObject = (objectTypeId, id) => {
         })
 };
 
+const createObject = (objectTypeId, address, price, relevantInformation) => {
+    return axios.post(`api/object-types/${objectTypeId}/objects`, { address, price, relevantInformation }, {
+        headers: {
+            'Authorization': `Bearer ${authService.getUserToken()}`
+        }
+    })
+        .then((response) => {
+            if (response.status === 201) {
+                return true;
+            }
+        });
+};
+
+const updateObject = (objectTypeId, objectId, address, price, relevantInformation) => {
+    return axios.put(`api/object-types/${objectTypeId}/objects/${objectId}`, { address, price, relevantInformation }, {
+        headers: {
+            'Authorization': `Bearer ${authService.getUserToken()}`
+        }
+    })
+        .then((response) => {
+            if (response.status === 200) {
+                return true;
+            }
+        });
+};
+
+const deleteObject = (objectTypeId, objectId) => {
+    return axios.delete(`api/object-types/${objectTypeId}/objects/${objectId}`, {
+        headers: {
+            'Authorization': `Bearer ${authService.getUserToken()}`
+        }
+    })
+        .then((response) => {
+            if (response.status === 204) {
+                return true;
+            }
+        })
+};
+
 const ObjectsService = {
     getOwnedObjectsByUser,
     getRentedObjectsByUser,
-    getObject
+    getObject,
+    createObject,
+    updateObject,
+    deleteObject
 };
 
 export default ObjectsService;

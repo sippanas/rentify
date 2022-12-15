@@ -10,6 +10,7 @@ import ObjectTypesForm from './components/object-types/Form';
 
 import ObjectsList from './components/objects/View';
 import ObjectView from './components/objects/SingleView';
+import ObjectsForm from './components/objects/Form';
 
 const AppRoutes = [
     {
@@ -51,6 +52,14 @@ const AppRoutes = [
     {
         path: '/rented-objects',
         element: <ObjectsList ownership="false" />
+    },
+    {
+        path: '/objects/create',
+        element: <ObjectsForm formType="create" />
+    },
+    {
+        path: '/object-type/:objectTypeId/object/:objectId/edit',
+        element: <ObjectsForm formType="edit" />
     },
     {
         path: '/object-type/:objectTypeId/object/:objectId',

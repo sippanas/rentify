@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { UncontrolledTooltip } from 'reactstrap';
+import { UncontrolledTooltip, Button } from 'reactstrap';
 import { useParams } from 'react-router-dom';
 import * as Icon from 'react-bootstrap-icons';
 import ObjectsService from '../../services/objects.service';
@@ -14,14 +14,27 @@ const ObjectView = () => {
             await ObjectsService.getObject(objectTypeId, objectId)
                 .then((data) => {
                     setObject(data);
-                });
+                })
+                .catch(() => {
+                    return window.location.href = '/notfound';
+                })
         };
 
-        getData().catch(() => {
-            return window.href.location = '/notfound';
-        });
+        getData();
 
     }, []);
+
+    const deleteObject = async (objectTypeId, objectId) => {
+        await ObjectsService.deleteObject(objectTypeId, objectId)
+            .then((response) => {
+                if (response === true) {
+                    return window.location.href = '/owned-objects';
+                }
+            })
+            .catch(() => {
+                return window.location.href = '/notfound';
+            });
+    };
 
     if (object.length < 1) {
         return 'Loading...';
@@ -33,9 +46,16 @@ const ObjectView = () => {
             <div className="card-body">
                 <h5 className="card-title">€{object.price}/month</h5>
                 <p className="card-text">{object.relevantInformation}</p>
-                {authService.getUserId() == object.ownerId ? (<a href="#" className="btn btn-primary">Edit property information</a>) : ''}
+                {authService.getUserId() == object.ownerId ?
+                    (<a href={`/object-type/${object.objectType.id}/object/${object.id}/edit?address=${object.address}&price=${object.price}&releveantInformation=${object.relevantInformation}`}
+                        className="btn btn-primary">Edit property information</a>) : ''}
                 {' '}
                 <a href="#" className="btn btn-warning">View room information</a>
+                {' '}
+                {authService.getUserId() == object.ownerId ?
+                    (<Button color="danger" onClick={() => deleteObject(objectTypeId, objectId)}>
+                        Delete property
+                    </Button>) : ''}
             </div>
             <div className="card-footer">
                 {object.occupierId == null ? <>

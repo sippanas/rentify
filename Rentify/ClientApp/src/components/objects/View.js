@@ -11,26 +11,30 @@ const ObjectsList = (props) => {
                 await ObjectsService.getOwnedObjectsByUser()
                     .then((data) => {
                         setObjects(data);
+                    })
+                    .catch(() => {
+                        return window.location.href = '/notfound';
                     });
             }
             else {
                 await ObjectsService.getRentedObjectsByUser()
                     .then((data) => {
                         setObjects(data);
+                    })
+                    .catch(() => {
+                        return window.location.href = '/notfound';
                     });
             }
         };
 
-        getData().catch(() => {
-            return window.location.href = '/notfound';
-        });
+        getData();
 
     }, [props.ownership]);
 
     return (
         <div className="list-group w-auto">
             <h1 className="position-relative top-50 start-50 translate-middle">My {props.ownership == "true" ? 'owned' : 'rented'} properties</h1>
-            <a href="#" className={"list-group-item " + (props.ownership == "true" ? "list-group-item-success" : "list-group-item-warning") +
+            <a href={props.ownership == "true" ? "/objects/create" : "/"} className={"list-group-item " + (props.ownership == "true" ? "list-group-item-success" : "list-group-item-warning") +
                                         " list-group-item-action d-flex gap-3 py-3"}
                 aria-current="true">
                 {props.ownership == "true" ? 
@@ -42,7 +46,7 @@ const ObjectsList = (props) => {
                 </div>
             </a>
             {objects.map((object) => {
-                return (<a key={object.id} href={`/object-type/${object.objectTypeId}/object/${object.id}?isOwner=${props.ownership}`}
+                return (<a key={object.id} href={`/object-type/${object.objectTypeId}/object/${object.id}`}
                         className="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
                         {props.ownership == "true" ? <><Icon.Houses color="black" size="22" /></> : <> <Icon.HouseFill color="black" size="22" /></>}
                         <div className="d-flex gap-2 w-100 justify-content-between">
