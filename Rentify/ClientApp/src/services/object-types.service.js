@@ -14,6 +14,19 @@ const getAllObjectTypes = () => {
         });
 };
 
+const getObjectType = (typeId) => {
+    return axios.get('api/object-types/' + typeId, {
+        headers: {
+            'Authorization': `Bearer ${authService.getUserToken()}`
+        }
+    })
+        .then((response) => {
+            if (response.status === 200) {
+                return response.data;
+            }
+        });
+};
+
 const createObjectType = (name) => {
     return axios.post('api/object-types/', { name }, {
         headers: {
@@ -26,7 +39,7 @@ const createObjectType = (name) => {
             }
         })
         .catch(() => {
-            window.location.href = '/notfound';
+            return window.location.href = '/notfound';
         });
 };
 
@@ -41,9 +54,8 @@ const updateObjectType = (id, newName) => {
                 return true;
             }
         })
-        .catch((error) => {
-            console.log(error);
-            //window.location.href = '/notfound';
+        .catch(() => {
+            return window.location.href = '/notfound';
         });
 }
 
@@ -65,6 +77,7 @@ const deleteObjectType = (id) => {
 
 const ObjectTypesService = {
     getAllObjectTypes,
+    getObjectType,
     createObjectType,
     updateObjectType,
     deleteObjectType

@@ -61,7 +61,7 @@ export class NavMenu extends Component {
                         {this.isLoggedIn() ?
                         (<>
                             <NavItem>
-                                <NavLink tag={Link} to="/counter">
+                                <NavLink tag={Link} to="/owned-objects">
                                     <Icon.Houses id="OwnedPropertyIcon" color="black" size="22"/>
                                     <UncontrolledTooltip className="d-none d-sm-block" placement="bottom" target="OwnedPropertyIcon">
                                         My owned property
@@ -69,7 +69,7 @@ export class NavMenu extends Component {
                                 </NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink tag={Link} to="/fetchdata">
+                                <NavLink tag={Link} to="/rented-objects">
                                     <Icon.HouseFill id="RentedPropertyIcon" color="black" size="22" />
                                     <UncontrolledTooltip className="d-none d-sm-block" placement="bottom" target="RentedPropertyIcon">
                                         My rented property

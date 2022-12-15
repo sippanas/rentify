@@ -26,3 +26,10 @@ code {
         width: 500px;
     }
 }
+
+/* For Bootstrap list */
+.list-group {
+    max-width: 460px;
+    margin: 4rem auto;
+}
+

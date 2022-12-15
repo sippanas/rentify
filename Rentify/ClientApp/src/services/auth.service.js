@@ -57,6 +57,14 @@ const getUserEmail = () => {
     }
 };
 
+const getUserId = () => {
+    if (getCurrentUser()) {
+        const token = decodeUserToken();
+
+        return token.sub;
+    }
+}
+
 const IsUserAdmin = () => {
     if (getCurrentUser()) {
         const token = decodeUserToken();
@@ -74,6 +82,7 @@ const authService = {
     getCurrentUser,
     getUserToken,
     getUserEmail,
+    getUserId,
     IsUserAdmin
 }
 

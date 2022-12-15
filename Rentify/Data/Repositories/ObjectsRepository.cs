@@ -19,7 +19,9 @@ namespace Rentify.Data.Repositories
 
         public async Task<Models.Object> Get(int objectTypeId, int objectId)
         {
-            return await _dbContext.Objects.Include(x => x.ObjectType)
+            return await _dbContext.Objects
+                .Include(x => x.ObjectType)
+                .Include(x => x.Occupier)
                 .FirstOrDefaultAsync(x => x.ObjectTypeId == objectTypeId && x.Id == objectId);
         }
 
@@ -28,6 +30,14 @@ namespace Rentify.Data.Repositories
             return await _dbContext.Objects.Where(x => x.OwnerId == userId)
                 .Include(x => x.ObjectType)
                 .Include(x => x.Occupier)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Models.Object>> GetRented(string userId)
+        {
+            return await _dbContext.Objects.Where(x => x.OccupierId == userId)
+                .Include(x => x.ObjectType)
+                .Include(x => x.Owner)
                 .ToListAsync();
         }
 

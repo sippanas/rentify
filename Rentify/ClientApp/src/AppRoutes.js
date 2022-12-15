@@ -8,6 +8,9 @@ import { NotFound } from "./components/NotFound";
 import ObjectTypesList from './components/object-types/View';
 import ObjectTypesForm from './components/object-types/Form';
 
+import ObjectsList from './components/objects/View';
+import ObjectView from './components/objects/SingleView';
+
 const AppRoutes = [
     {
         index: true,
@@ -40,6 +43,18 @@ const AppRoutes = [
     {
         path: '/object-types/edit/:typeId',
         element: <ObjectTypesForm formType="edit" />
+    },
+    {
+        path: '/owned-objects',
+        element: <ObjectsList ownership="true" />
+    },
+    {
+        path: '/rented-objects',
+        element: <ObjectsList ownership="false" />
+    },
+    {
+        path: '/object-type/:objectTypeId/object/:objectId',
+        element: <ObjectView />
     },
     {
         path: '/notfound',

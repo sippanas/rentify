@@ -35,7 +35,8 @@ namespace Rentify.Controllers
             var objectsOfType = await _objectsRepository.GetAll(objectTypeId);
 
             var objectsDto = objectsOfType.Select(x => 
-                    new ObjectDto(x.Id, x.Address, x.Price, x.RelevantInformation, x.ObjectTypeId, x.ObjectType));
+                    new ObjectDto(x.Id, x.Address, x.Price, x.RelevantInformation, x.ObjectTypeId, x.ObjectType,
+                    x.OccupierId, x.Occupier));
 
             return Ok(objectsDto);
         }
@@ -47,10 +48,11 @@ namespace Rentify.Controllers
             var selectedObject = await _objectsRepository.Get(objectTypeId, objectId);
             if (selectedObject == null) return NotFound();
 
-            var selectedObjectDto = new ObjectDto(selectedObject.Id, selectedObject.Address,
-                selectedObject.Price, selectedObject.RelevantInformation, selectedObject.ObjectTypeId, selectedObject.ObjectType);
+            //var selectedObjectDto = new ObjectDto(selectedObject.Id, selectedObject.Address,
+            //    selectedObject.Price, selectedObject.RelevantInformation, selectedObject.ObjectTypeId, 
+            //    selectedObject.ObjectType, selectedObject.OccupierId, selectedObject.Occupier);
 
-            return Ok(selectedObjectDto);
+            return Ok(selectedObject);
         }
 
         // GET: /api/objects/owned
@@ -60,6 +62,17 @@ namespace Rentify.Controllers
         {
             var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             var objects = await _objectsRepository.GetOwned(userId);
+
+            return Ok(objects);
+        }
+
+        // GET: /api/objects/rented
+        [HttpGet]
+        [Route("/api/objects/rented")]
+        public async Task<ActionResult<Data.Models.Object>> GetRentedObjectsByUser()
+        {
+            var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            var objects = await _objectsRepository.GetRented(userId);
 
             return Ok(objects);
         }

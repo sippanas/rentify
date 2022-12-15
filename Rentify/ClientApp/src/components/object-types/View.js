@@ -12,8 +12,8 @@ const ObjectTypesList = () => {
             await ObjectTypesService.getAllObjectTypes()
                 .then((data) => {
                     setTypes(data);
-                })
-        }
+                });
+        };
 
         getData().catch(() => {
             window.location.href = '/notfound'

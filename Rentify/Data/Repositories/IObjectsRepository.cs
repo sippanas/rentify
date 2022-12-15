@@ -6,6 +6,7 @@
         Task Delete(Models.Object selectedObject);
         Task<Models.Object> Get(int objectTypeId, int objectId);
         Task<IEnumerable<Models.Object>> GetOwned(string userId);
+        Task<IEnumerable<Models.Object>> GetRented(string userId);
         Task<IEnumerable<Models.Object>> GetAll(int objectTypeId);
         Task Put(Models.Object selectedObject);
     }
