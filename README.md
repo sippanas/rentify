@@ -43,7 +43,7 @@ Platformoje nebus talpinami nuomos skelbimai, viskas orientuota į pačios nuomo
 - Serverio pusė (angl. Back-end) - **C# (ASP.NET Core)**
 - Duomenų bazė - **MySQL**
 
-
+&nbsp;
 ## API specifikacija
 ### Objekto tipas
 ```http
@@ -53,6 +53,7 @@ Galimi atsako kodai:
 - 401 - Unauthorized
 - 200 - OK
 
+&nbsp;
 ```http
 GET /api/object-types/{id}
 ```
@@ -61,6 +62,7 @@ Galimi atsako kodai:
 - 404 - Not Found
 - 200 - OK
 
+&nbsp;
 ```http
 POST /api/object-types/
 ```
@@ -74,6 +76,7 @@ Galimi atsako kodai:
 - 401 - Unauthorized
 - 201 - Created
 
+&nbsp;
 ```http
 PUT /api/object-types/{id}
 ```
@@ -88,6 +91,7 @@ Galimi atsako kodai:
 - 404 - Not Found
 - 200 - OK
 
+&nbsp;
 ```http
 DELETE /api/object-types/{id}
 ```
@@ -96,7 +100,7 @@ Galimi atsako kodai:
 - 404 - Not Found
 - 204 - No Content
 
-
+&nbsp;
 ## Objektas
 ```http
 GET /api/object-types/{typeId}/objects/
@@ -106,6 +110,7 @@ Galimi atsako kodai:
 - 404 - Not Found
 - 200 - OK
 
+&nbsp;
 ```http
 GET /api/object-types/{typeId}/objects/{id}
 ```
@@ -114,6 +119,7 @@ Galimi atsako kodai:
 - 404 - Not Found
 - 200 - OK
 
+&nbsp;
 ```http
 POST /api/object-types/{typeId}/objects/{id}
 ```
@@ -130,6 +136,7 @@ Galimi atsako kodai:
 - 404 - Not Found
 - 201 - Created
 
+&nbsp;
 ```http
 PUT /api/object-types/{typeId}/objects/{id}
 ```
@@ -147,6 +154,7 @@ Galimi atsako kodai:
 - 404 - Not Found
 - 200 - OK
 
+&nbsp;
 ```http
 DELETE /api/object-types/{typeId}/objects/{id}
 ```
@@ -156,7 +164,7 @@ Galimi atsako kodai:
 - 404 - Not Found
 - 204 - No Content
 
-
+&nbsp;
 ## Kambarys/Patalpa
 ```http
 GET /api/object-types/{typeId}/objects/{objectId}/rooms/
@@ -166,6 +174,7 @@ Galimi atsako kodai:
 - 404 - Not Found
 - 200 - OK
 
+&nbsp;
 ```http
 GET /api/object-types/{typeId}/objects/{objectId}/rooms/{id}
 ```
@@ -174,6 +183,7 @@ Galimi atsako kodai:
 - 404 - Not Found
 - 200 - OK
 
+&nbsp;
 ```http
 POST /api/object-types/{typeId}/objects/{objectId}/rooms/
 ```
@@ -190,6 +200,7 @@ Galimi atsako kodai:
 - 404 - Not Found
 - 201 - Created
 
+&nbsp;
 ```http
 PUT /api/object-types/{typeId}/objects/{objectId}/rooms/{id}
 ```
@@ -206,6 +217,7 @@ Galimi atsako kodai:
 - 404 - Not Found
 - 200 - OK
 
+&nbsp;
 ```http
 DELETE /api/object-types/{typeId}/objects/{id}
 ```
@@ -214,3 +226,36 @@ Galimi atsako kodai:
 - 403 - Forbidden
 - 404 - Not Found
 - 204 - No Content
+
+
+## Autentifikacija
+```http
+POST /api/register/
+```
+Body: 
+```json
+{
+    "name": "Petras",
+    "surname": "Petraitis",
+    "email": "petras.petraitis@gmail.com",
+    "password": "SuperGreatPassword321@"
+}
+```
+Galimi atsako kodai:
+- 400 - Bad Request
+- 201 - Created
+
+&nbsp;
+```http
+POST /api/login/
+```
+Body: 
+```json
+{
+    "email": "petras.petraitis@gmail.com",
+    "password": "SuperGreatPassword321@"
+}
+```
+Galimi atsako kodai: 
+- 400 - Bad Request
+- 200 - OK
